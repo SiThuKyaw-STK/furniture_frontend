@@ -1,4 +1,4 @@
-import { HomeIcon, MenuIcon } from "lucide-react";
+import { HomeIcon, MenuIcon, TriangleAlertIcon } from "lucide-react";
 
 export type IconProps = React.HTMLAttributes<SVGAElement>;
 
@@ -22,6 +22,6 @@ export const Icons = {
     );
   },
   home: HomeIcon,
-  menu: MenuIcon
-  ,
+  menu: MenuIcon,
+  exclamation: TriangleAlertIcon,
 };
