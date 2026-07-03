@@ -1,4 +1,6 @@
 import { HomeIcon, MenuIcon, TriangleAlertIcon } from "lucide-react";
+import { ImSpinner9 } from "react-icons/im";
+import { IoMdSend } from "react-icons/io";
 
 export type IconProps = React.HTMLAttributes<SVGAElement>;
 
@@ -24,4 +26,6 @@ export const Icons = {
   home: HomeIcon,
   menu: MenuIcon,
   exclamation: TriangleAlertIcon,
+  send: IoMdSend,
+  spinner: ImSpinner9,
 };
