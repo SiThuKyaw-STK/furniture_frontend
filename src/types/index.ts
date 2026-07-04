@@ -24,11 +24,13 @@ export type Product = {
 
 export type Post = {
   id: string;
+  author: string;
   title: string;
   content: string;
   image: string;
-  author: string;
+  body: string;
   updatedAt: string;
+  tags: string[];
 };
 
 export type MainNavItem = NavItemWitchChildren;

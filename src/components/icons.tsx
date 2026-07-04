@@ -1,6 +1,9 @@
 import { HomeIcon, MenuIcon, TriangleAlertIcon } from "lucide-react";
 import { ImSpinner9 } from "react-icons/im";
 import { IoMdSend } from "react-icons/io";
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import { IoLayers } from "react-icons/io5";
+
 
 export type IconProps = React.HTMLAttributes<SVGAElement>;
 
@@ -28,4 +31,6 @@ export const Icons = {
   exclamation: TriangleAlertIcon,
   send: IoMdSend,
   spinner: ImSpinner9,
+  arrowLeft: FaLongArrowAltLeft,
+  layers: IoLayers
 };

@@ -134,7 +134,7 @@ const Home = () => {
             ))}
       </div> */}
       <Title title="Recent Blog" href="/blogs" sideText="View All Posts" />
-      {samplePosts && <PostCard posts={samplePosts} />}
+      {samplePosts && <PostCard posts={samplePosts} isHaveContent={false} />}
     </div>
   );
 };
