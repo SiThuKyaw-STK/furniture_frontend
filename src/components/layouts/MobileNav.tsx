@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useEffect, useState } from "react";
 
 import type { MainNavItem } from "@/types";
 import { Icons } from "@/components/icons";
@@ -24,11 +24,27 @@ interface MainNavigationProps {
 }
 
 const MobileNav = ({ items }: MainNavigationProps) => {
+  const [isDesktop, setIsDesktop] = useState(false);
+  const query = "(min-width: 1024px)";
+
+  useEffect(() => {
+    function onChange(event: MediaQueryListEvent) {
+      setIsDesktop(event.matches);
+    }
+    const result = matchMedia(query);
+    result.addEventListener("change", onChange);
+    return () => result.removeEventListener("change", onChange);
+  }, [query]);
+
+  if (isDesktop) {
+    return null;
+  }
+
   return (
     <div className="flex lg:hidden">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="ml-4">
+          <Button variant="ghost" size="icon" className="">
             <Icons.menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
@@ -53,7 +69,12 @@ const MobileNav = ({ items }: MainNavigationProps) => {
                   <div className="flex flex-col space-y-2 pl-2">
                     {items?.[0]?.card?.map((item) => (
                       <SheetClose asChild key={item.title}>
-                        <Link to={String(item.href)} className="text-foreground/70 no-underline">{item.title}</Link>
+                        <Link
+                          to={String(item.href)}
+                          className="text-foreground/70 no-underline"
+                        >
+                          {item.title}
+                        </Link>
                       </SheetClose>
                     ))}
                   </div>
@@ -62,11 +83,13 @@ const MobileNav = ({ items }: MainNavigationProps) => {
             </Accordion>
 
             <div className="flex flex-col space-y-2">
-                {items?.[0]?.menu?.map((item) => (
-                  <SheetClose asChild key={item.title}>
-                    <Link to={String(item.href)} className="">{item.title}</Link>
-                  </SheetClose>
-                ))}
+              {items?.[0]?.menu?.map((item) => (
+                <SheetClose asChild key={item.title}>
+                  <Link to={String(item.href)} className="">
+                    {item.title}
+                  </Link>
+                </SheetClose>
+              ))}
             </div>
           </ScrollArea>
         </SheetContent>

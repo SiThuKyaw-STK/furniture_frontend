@@ -10,19 +10,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import Footer from "@/components/layouts/Footer";
+import Footer from "@/components/layouts/Footer";
 import { Icons } from "@/components/icons";
 
 function Error() {
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden">
+    <div className="flex min-h-screen flex-col">
       <Header />
       <main className="mx-auto my-32 flex flex-1 items-center">
-        <Card className="w-[350px] md:w-[500px] lg:w-[500px]">
-          <CardHeader className="flex flex-col justify-center items-center gap-2">
-            <div className="border-muted-foreground/70 mt-2 mb-4 grid size-15 place-items-center rounded-full border border-dashed">
+        <Card className="w-87.5 md:w-125 lg:w-125">
+          <CardHeader className="flex flex-col justify-center items-center gap-2 ">
+            <div className="border-red-500 mt-2 mb-4 grid size-15 place-items-center rounded-full border border-dashed">
               <Icons.exclamation
-                className="text-muted-foreground/70 size-6"
+                className="text-red-500 size-6"
                 aria-hidden="true"
               />
             </div>
@@ -36,7 +36,7 @@ function Error() {
           </CardFooter>
         </Card>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

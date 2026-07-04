@@ -7,6 +7,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { Button } from "./ui/button";
 
 const formSchema = z.object({
   email: z.email("Please enter a valid email address."),
@@ -49,8 +50,10 @@ export function EmailForm() {
                 {spinner ? (
                   <Icons.spinner className="animate-spin text-muted-foreground" />
                 ) : (
-                  <Icons.send className="text-muted-foreground" />
-                )}
+                    <Button variant='ghost' type="submit" disabled={spinner}>
+                      <Icons.send className="text-muted-foreground" />
+                    </Button>
+                  )}
               </InputGroupAddon>
             </InputGroup>
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

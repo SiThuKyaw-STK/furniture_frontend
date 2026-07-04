@@ -6,11 +6,11 @@ import { ModeToggle } from "../mode-toggle";
 
 const Header = () => {
   return (
-    <header className="w-full border-b">
-      <nav className="container flex items-center h-16 mx-auto">
+    <header className="w-full border-b sticky top-0 z-40 bg-background">
+      <nav className="container flex items-center h-16 mx-auto px-2 lg:px-0">
         <MainNav items={siteConfig.mainNav} />
         <MobileNav items={siteConfig.mainNav} />
-        <div className="flex-1 flex justify-end items-center space-x-4 mr-8 lg:mr-0">
+        <div className="flex-1 flex justify-end items-center space-x-4 ">
           <ModeToggle />
         </div>
       </nav>

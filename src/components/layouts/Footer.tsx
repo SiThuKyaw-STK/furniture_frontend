@@ -5,9 +5,9 @@ import { EmailForm } from "@/components/new-letter";
 
 const Footer = () => {
   return (
-    <footer className="w-full border-t px-4 lg:ml-0">
+    <footer className="w-full border-t px-4 xl:px-0">
       <div className="container mx-auto pb-8 pt-6 lg:py-6">
-        <section className="flex flex-col lg:flex-row gap-10 lg:gap-20">
+        <section className="flex flex-col xl:flex-row xl:justify-between gap-10">
           <section>
             <Link to="/" className="flex items-center space-x-2">
               <Icons.logo className="size-6" />
