@@ -19,7 +19,7 @@ const PostCard = ({ posts, isHaveContent = false }: PostCardProps) => {
             {post.title}
           </h2>
           {isHaveContent && (
-            <h3 className={`${!isHaveContent && 'ml-4'} my-2 text-sm text-muted-foreground line-clamp-3`}>
+            <h3 className={`${!isHaveContent && 'ml-4'} my-2 text-sm text-muted-foreground line-clamp-2`}>
               {post.content}
             </h3>
           )}

@@ -33,4 +33,9 @@ export type Post = {
   tags: string[];
 };
 
+export type Category = {
+  id: string;
+  label: string;
+};
+
 export type MainNavItem = NavItemWitchChildren;

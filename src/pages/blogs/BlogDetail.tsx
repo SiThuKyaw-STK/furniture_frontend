@@ -1,4 +1,3 @@
-import React from 'react'
 import { useParams, Link } from 'react-router'
 import { posts } from '@/data/posts'
 import { Icons } from '@/components/icons';
@@ -79,8 +78,6 @@ const BlogDetail = () => {
                 <img
                   src={post.image}
                   alt="blog post"
-                  loading="lazy"
-                  decoding="async"
                   className="w-1/4 rounded"
                 />
                 <div className="w-3/4 text-sm font-medium text-muted-foreground">
