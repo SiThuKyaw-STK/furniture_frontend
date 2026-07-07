@@ -2,7 +2,13 @@ import { HomeIcon, MenuIcon, TriangleAlertIcon } from "lucide-react";
 import { ImSpinner9 } from "react-icons/im";
 import { IoMdSend } from "react-icons/io";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { IoLayers } from "react-icons/io5";
+import { IoLayers, IoStar } from "react-icons/io5";
+import { RxHeart } from "react-icons/rx";
+import { FaPlus,FaMinus } from "react-icons/fa6";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FaRegCreditCard } from "react-icons/fa";
+import { GoGear } from "react-icons/go";
+import { MdExitToApp } from "react-icons/md";
 
 
 export type IconProps = React.HTMLAttributes<SVGAElement>;
@@ -32,5 +38,13 @@ export const Icons = {
   send: IoMdSend,
   spinner: ImSpinner9,
   arrowLeft: FaLongArrowAltLeft,
-  layers: IoLayers
+  layers: IoLayers,
+  star: IoStar,
+  heart: RxHeart,
+  plus: FaPlus,
+  minus: FaMinus,
+  dashboard: MdOutlineSpaceDashboard,
+  bill: FaRegCreditCard,
+  gear: GoGear,
+  exit: MdExitToApp
 };

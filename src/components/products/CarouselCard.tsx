@@ -8,6 +8,12 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { Link } from "react-router";
 import type { Product } from "@/types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface ProductProps {
   products: Product[];

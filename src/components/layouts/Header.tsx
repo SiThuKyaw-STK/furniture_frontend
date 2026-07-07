@@ -3,6 +3,8 @@ import { siteConfig } from "@/config/site";
 import MobileNav from "./MobileNav";
 import MainNav from "@/components/layouts/MainNav";
 import { ModeToggle } from "../mode-toggle";
+import AuthDropDown from "./AuthDropDown";
+import { User } from "@/data/user";
 
 const Header = () => {
   return (
@@ -12,6 +14,7 @@ const Header = () => {
         <MobileNav items={siteConfig.mainNav} />
         <div className="flex-1 flex justify-end items-center space-x-4 ">
           <ModeToggle />
+          <AuthDropDown user={User}/>
         </div>
       </nav>
     </header>
