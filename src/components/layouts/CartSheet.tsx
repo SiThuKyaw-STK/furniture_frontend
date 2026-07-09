@@ -13,40 +13,38 @@ import {
 } from "@/components/ui/sheet";
 import { Icons } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { cartItems } from "@/data/carts";
 
 const CartSheet = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Button variant="ghost" size="icon" className="">
-          <Icons.shoppingCart className="h-5 w-5" />
-          <Badge className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300">
+        <Button variant="ghost" size="icon" className="relative">
+          <Icons.shoppingCart className="size-4" />
+          <Badge
+            className="absolute -top-2 -right-2 size-6 justify-center rounded-full p-2.5"
+            variant="destructive"
+          >
             3
           </Badge>
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
-          </SheetDescription>
+        <SheetHeader className="">
+          <SheetTitle>Cart - 3</SheetTitle>
         </SheetHeader>
-        <div className="grid flex-1 auto-rows-min gap-6 px-4">
-          <div className="grid gap-3">
-            <Label htmlFor="sheet-demo-name">Name</Label>
-            <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
+        <Separator />
+        {cartItems.length > 0 ? (
+          <p></p>
+        ) : (
+          <div className="flex flex-col h-screen place-items-center justify-center space-y-1">
+            <Icons.shoppingCart className="size-16 mb-4 text-muted-foreground " />
+            <div className="text-xl font-medium text-muted-foreground">Your cart is empty</div>
           </div>
-          <div className="grid gap-3">
-            <Label htmlFor="sheet-demo-username">Username</Label>
-            <Input id="sheet-demo-username" defaultValue="@peduarte" />
-          </div>
-        </div>
+        )}
         <SheetFooter>
           <Button type="submit">Save changes</Button>
-          <SheetClose>
-            <Button variant="outline">Close</Button>
-          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
