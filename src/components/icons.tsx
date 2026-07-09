@@ -9,6 +9,7 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { FaRegCreditCard } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
 import { MdExitToApp } from "react-icons/md";
+import { FaCartShopping } from "react-icons/fa6"
 
 
 export type IconProps = React.HTMLAttributes<SVGAElement>;
@@ -46,5 +47,6 @@ export const Icons = {
   dashboard: MdOutlineSpaceDashboard,
   bill: FaRegCreditCard,
   gear: GoGear,
-  exit: MdExitToApp
+  exit: MdExitToApp,
+  shoppingCart: FaCartShopping
 };
