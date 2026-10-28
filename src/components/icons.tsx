@@ -3,16 +3,15 @@ import { ImSpinner9 } from "react-icons/im";
 import { IoMdSend } from "react-icons/io";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { IoLayers, IoStar } from "react-icons/io5";
-import { RxHeart } from "react-icons/rx";
-import { FaPlus,FaMinus } from "react-icons/fa6";
+import { RxHeart, RxHeartFilled } from "react-icons/rx";
+import { FaPlus, FaMinus, FaTrash } from "react-icons/fa6";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { FaRegCreditCard } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
 import { MdExitToApp } from "react-icons/md";
-import { FaCartShopping } from "react-icons/fa6"
+import { FaCartShopping } from "react-icons/fa6";
 
-
-export type IconProps = React.HTMLAttributes<SVGAElement>;
+export type IconProps = React.HTMLAttributes<SVGSVGElement>;
 
 export const Icons = {
   logo: (props: IconProps) => {
@@ -42,11 +41,13 @@ export const Icons = {
   layers: IoLayers,
   star: IoStar,
   heart: RxHeart,
+  heartFilled: RxHeartFilled,
   plus: FaPlus,
   minus: FaMinus,
+  trash: FaTrash,
   dashboard: MdOutlineSpaceDashboard,
   bill: FaRegCreditCard,
   gear: GoGear,
   exit: MdExitToApp,
-  shoppingCart: FaCartShopping
+  shoppingCart: FaCartShopping,
 };

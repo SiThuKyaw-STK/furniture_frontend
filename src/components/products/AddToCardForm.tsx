@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import { Field, FieldSet } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,44 +7,51 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import useCartStore from "@/store/cartStore";
+import { useEffect } from "react";
 
 const quantitySchema = z.object({
-  qty: z.number().min(1).default(1),
+  quantity: z.string().min(1).default(1),
 });
 
-function onSubmit(data: z.infer<typeof quantitySchema>) {
-  console.log(data);
-  toast.success("Product is added to cart successfully.");
-}
-
-interface canBuyProps {
+interface AddToCardFormProps {
   canBuy: boolean;
+  onHandleCart: (quantity: number) => void;
+  idInCart: number;
 }
 
-const AddToCardForm = ({ canBuy }: canBuyProps) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+const AddToCardForm = ({ canBuy, onHandleCart, idInCart }: AddToCardFormProps) => {
+  const cartItem = useCartStore((state) => state.carts.find((cart) => cart.id === idInCart))
+  const { control, handleSubmit, setValue, watch } = useForm({
     resolver: zodResolver(quantitySchema),
     defaultValues: {
-      qty: 1,
+      quantity: cartItem ? cartItem.quantity.toString() : '1',
     },
   });
 
-  // // Watch the qty value from react-hook-form
-  // const qty = watch("qty");
+  // // Watch the quantity value from react-hook-form
+  const currentQuantity = Number(watch("quantity"));
 
-  // const handleIncrement = () => {
-  //   setValue("qty", qty + 1);
-  // };
+  const handleDecrease = () => {
+    const newQuantity = Math.max(currentQuantity - 1, 0); // Min limit 0
+    setValue("quantity", newQuantity.toString(), { shouldValidate: true });
+  };
 
-  // const handleDecrement = () => {
-  //   if (qty > 1) {
-  //     setValue("qty", qty - 1);
-  //   }
-  // };
+  const handleIncrease = () => {
+    const newQuantity = Math.min(currentQuantity + 1, 9999); // Max limit 9999
+    setValue("quantity", newQuantity.toString(), { shouldValidate: true });
+  };
+
+  const onSubmit = (data: z.infer<typeof quantitySchema>) => {
+    onHandleCart(Number(data.quantity));
+    toast.success("Product is added to cart successfully.");
+  };
+
+  useEffect(() => {
+    if(cartItem){
+      setValue("quantity", cartItem.quantity.toString(),{shouldValidate: true})
+    }
+  },[cartItem,setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-30">
@@ -56,20 +61,23 @@ const AddToCardForm = ({ canBuy }: canBuyProps) => {
           variant="outline"
           size="icon"
           className="rounded-tr-none rounded-br-none"
+          onClick={handleDecrease}
+          disabled={currentQuantity <= 1}
         >
           <Icons.minus />
         </Button>
         <Controller
           control={control}
-          name="qty"
+          name="quantity"
           render={({ field }) => (
             <Field orientation="horizontal">
               <Input
                 type="number"
                 {...field}
                 min={1}
+                max={9999}
                 inputMode="numeric"
-                className="rounded-none w-16 text-center"
+                className="rounded-none w-16 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
             </Field>
           )}
@@ -79,6 +87,8 @@ const AddToCardForm = ({ canBuy }: canBuyProps) => {
           variant="outline"
           size="icon"
           className="rounded-tl-none rounded-bl-none"
+          onClick={handleIncrease}
+          disabled={currentQuantity >= 9999}
         >
           <Icons.plus />
         </Button>
@@ -98,7 +108,7 @@ const AddToCardForm = ({ canBuy }: canBuyProps) => {
           // variant={!canBuy ? "outline" : "default"}
           className={cn("w-full font-semibold")}
         >
-          Add To Cart
+          {cartItem ? "Update Cart" : "Add To Cart"}
         </Button>
       </div>
     </form>

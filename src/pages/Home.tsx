@@ -1,15 +1,17 @@
-import React from "react";
+/* eslint-disable react-refresh/only-export-components */
 import { Link } from "react-router";
-// import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import Couch from "@/data/images/couch.png";
 import { Button } from "@/components/ui/button";
 import CarouselCard from "@/components/products/CarouselCard";
 import type { Product } from "@/types";
-import { products } from "@/data/products";
-import { posts } from "@/data/posts";
+// import { products } from "@/data/products";
+// import { posts } from "@/data/posts";
 import PostCard from "@/components/posts/PostCard";
 import ProductCard from "@/components/products/ProductCard";
+import { postQuery, productQuery } from "@/api/query";
+import useUrlStore from "@/store/urlStore";
 
 const Title = ({
   title,
@@ -29,7 +31,58 @@ const Title = ({
 );
 
 const Home = () => {
-  const samplePosts = posts.slice(0, 3);
+  // const samplePosts = posts.slice(0, 3);
+
+  // const {productData, postData} = useLoaderData();
+
+  // const {
+  //   data: productData,
+  //   isLoading: isLoadingProduct,
+  //   isError: isErrorProduct,
+  //   error: productError,
+  //   refetch: refetchProduct,
+  // } = useQuery(productQuery("?limit=8"));
+
+  // const {
+  //   data: postData,
+  //   isLoading: isLoadingPost,
+  //   isError: isErrorPost,
+  //   error: postError,
+  //   refetch: refetchPost,
+  // } = useQuery(postQuery("?limit=3"));
+
+  // if (isLoadingProduct && isLoadingPost) {
+  //   return (
+  //     <div className="flex min-h-[60vh] items-center justify-center">
+  //       <Loader2 className="h-8 w-8 animate-spin text-primary" />
+  //     </div>
+  //   );
+  // }
+
+  // if (isErrorPost && isErrorProduct) {
+  //   return (
+  //     <div className="container mx-auto my-32 flex flex-1 place-content-center">
+  //       <div className="text-center text-red-400">
+  //         <p className="mb-4">
+  //           {productError.message} & {postError.message}
+  //         </p>
+  //         <Button
+  //           onClick={() => {
+  //             refetchPost();
+  //             refetchProduct();
+  //           }}
+  //           variant="secondary"
+  //         >
+  //           Retry
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  const url = useUrlStore((state) => state.url);
+  const { data: productData } = useSuspenseQuery(productQuery("?limit=8"));
+  const { data: postData } = useSuspenseQuery(postQuery("?limit=3"));
 
   return (
     <div className="container mx-auto">
@@ -62,19 +115,19 @@ const Home = () => {
         {/* Image Section */}
         <img src={Couch} alt="Couch" className="w-full lg:w-3/5" />
       </div>
-      <CarouselCard products={products} />
+      <CarouselCard products={productData.products} />
       <Title
         title="Featured Products"
-        href="/products"
+        href={`products?${url ?? ""}`}
         sideText="View All Products"
       />
       <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-2 md:px-0 lg:grid-cols-4">
-        {products.slice(0, 4).map((product: Product) => (
+        {productData.products.slice(0, 4).map((product: Product) => (
           <ProductCard product={product} key={product.id} />
         ))}
       </div>
       <Title title="Recent Blog" href="/blogs" sideText="View All Posts" />
-      {samplePosts && <PostCard posts={samplePosts} isHaveContent={false} />}
+      {postData && <PostCard posts={postData.posts} isHaveContent={false} />}
     </div>
   );
 };

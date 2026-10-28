@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@/types";
-import { Link } from "react-router";
+import { Form, Link } from "react-router";
 import { Icons } from "../icons";
 
 interface userProps {
@@ -73,11 +73,14 @@ const AuthDropDown = ({ user }: userProps) => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link to="/login">
+          {/* <Link to="/login">
             <Icons.exit />
             Log out
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </Link>
+          </Link> */}
+          <Form method="POST" action="logout">
+            <button type="submit" className="w-full">Logout</button>
+          </Form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

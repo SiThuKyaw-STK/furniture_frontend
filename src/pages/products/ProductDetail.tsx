@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,27 +11,55 @@ import {
 } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import Autoplay from "embla-carousel-autoplay";
-import { products } from "@/data/products";
-import { Link, useParams } from "react-router";
+// import { products } from "@/data/products";
+import { useLoaderData, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import ProductCard from "@/components/products/ProductCard";
 import { Icons } from "@/components/icons";
-import type { Image, Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import Rating from "./Rating";
-import AddToFavourite from "./AddToFavourite";
+// import AddToFavourite from "./AddToFavourite";
+import AddToFavourite from "./AddToFavouriteTanstack";
 import AddToCardForm from "@/components/products/AddToCardForm";
+import { oneProductQuery, productQuery } from "@/api/query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import type { Image, Product } from "@/types";
+import useCartStore from "@/store/cartStore";
 
 const ProductDetail = () => {
-  const { productId } = useParams();
-  const product = products.find((product) => product.id === productId);
+  const navigate = useNavigate();
+  const { productId } = useLoaderData<{ productId: string }>();
+  const { data: productDetail } = useSuspenseQuery(
+    oneProductQuery(Number(productId)),
+  );
+  const { data: productData } = useSuspenseQuery(productQuery("?limit=4"));
+
+  const imageUrl = import.meta.env.VITE_IMG_URL;
+
+  const { addItem } = useCartStore();
+
+  const handleAddToCart = (quantity: number) => {
+    if (productDetail) {
+      const product = productDetail.product;
+  
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: quantity,
+        image: product.images[0].path, // Assuming the first image is the main image
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 md:px-0">
-      <Button asChild variant="outline" className="mt-8">
-        <Link to="/products">
+      <Button variant="outline" className="mt-8" onClick={() => navigate(-1)}>
+        <Icons.arrowLeft /> All Products
+        {/* <Link to="/products">
           <Icons.arrowLeft /> All Products
-        </Link>
+        </Link> */}
       </Button>
       <section className="my-6 flex flex-col gap-6 md:flex-row md:gap-16">
         <Carousel
@@ -44,12 +71,12 @@ const ProductDetail = () => {
           ]}
         >
           <CarouselContent>
-            {product?.images.map((image) => (
-              <CarouselItem key={image}>
+            {productDetail?.product.images.map((image: Image) => (
+              <CarouselItem key={image.id}>
                 <div className="p-1">
                   <img
-                    src={image}
-                    alt={product.name}
+                    src={imageUrl + image.path}
+                    alt={productDetail?.product.name}
                     loading="lazy"
                     decoding="async"
                     className="size-full rounded-md object-cover"
@@ -62,34 +89,45 @@ const ProductDetail = () => {
         <Separator className="mt-4 md:hidden" />
         <div className="flex w-full flex-col gap-4 md:w-1/2">
           <div className="space-y-2">
-            <h2 className="line-clamp-1 text-2xl font-bold">{product?.name}</h2>
+            <h2 className="line-clamp-1 text-2xl font-bold">
+              {productDetail?.product.name}
+            </h2>
             <p className="text-base text-muted-foreground">
-              {formatPrice(Number(product?.price))}
+              {formatPrice(Number(productDetail?.product.price))}
             </p>
           </div>
           <Separator className="my-1.5" />
           <p className="text-base text-muted-foreground">
-            {product?.inventory} in stock
+            {productDetail?.product.inventory} in stock
           </p>
           <div className="flex items-center justify-between">
-            <Rating rating={Number(product?.rating)} />
+            <Rating rating={Number(productDetail?.product.rating)} />
             <AddToFavourite
-              productId={String(product?.id)}
-              rating={Number(product?.rating)}
+              productId={Number(productDetail?.product.id)}
+              rating={Number(productDetail?.product.rating)}
+              isFavorited={productDetail.product.users.length === 1}
             />
           </div>
 
-          <AddToCardForm canBuy={product?.status === "active"} />
+          <AddToCardForm
+            canBuy={productDetail?.product.status === "active"}
+            onHandleCart={handleAddToCart}
+            idInCart={productDetail.product.id}
+          />
 
           <Separator className="my-5" />
 
-          <Accordion defaultValue={"description"} type="single" collapsible className="w-full">
+          <Accordion
+            defaultValue={"description"}
+            type="single"
+            collapsible
+            className="w-full"
+          >
             <AccordionItem value="description" className="">
-              <AccordionTrigger>
-                Description
-              </AccordionTrigger>
+              <AccordionTrigger>Description</AccordionTrigger>
               <AccordionContent>
-                {product?.description ?? "No description is available for this product."}
+                {productDetail?.product.description ??
+                  "No description is available for this product."}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -101,7 +139,7 @@ const ProductDetail = () => {
         </h2>
         <ScrollArea className="pb-4">
           <div className="flex gap-4">
-            {products.slice(0, 4).map((product) => (
+            {productData?.products?.slice(0, 4).map((product: Product) => (
               <ProductCard
                 key={product.id}
                 product={product}

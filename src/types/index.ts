@@ -5,15 +5,19 @@ export interface NavItem {
 };
 
 export interface NavItemWitchChildren extends NavItem {
-    card: NavItemWitchChildren[];
-    menu: NavItemWitchChildren[];
+    card?: NavItemWitchChildren[];
+    menu?: NavItemWitchChildren[];
 };
 
+export type Image = {
+  id: number;
+  path: string
+}
 export type Product = {
-  id: string;
+  id: number;
   name: string;
   description: string;
-  images: string[];
+  images: Image[];
   categoryId: string;
   price: number;
   discount: number;
@@ -23,23 +27,23 @@ export type Product = {
 };
 
 export type Post = {
-  id: string;
-  author: string;
+  id: number;
+  author: {fullName: string};
   title: string;
   content: string;
   image: string;
   body: string;
   updatedAt: string;
-  tags: string[];
+  tags: {name: string};
 };
 
 export type Category = {
-  id: string;
-  label: string;
+  id: number;
+  name: string;
 };
 
 export type User = {
-  id: string,
+  id: number,
   firstName: string,
   lastName: string,
   username: string,

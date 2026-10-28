@@ -37,9 +37,11 @@ const FormSchema = z.object({
 const LoginForm = () => {
   const submit = useSubmit();
   const navigation = useNavigation();
-  const actionData = useActionData() as { error?: string } | undefined;
+  const actionData = useActionData();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const { register, handleSubmit, formState: {errors} } = useForm<
+    z.infer<typeof FormSchema>
+  >({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       phone: "",
@@ -60,10 +62,7 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          autoComplete="off"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
@@ -74,9 +73,9 @@ const LoginForm = () => {
                   placeholder="0977**********"
                   required
                   inputMode="numeric"
-                  {...form.register("phone")}
+                  {...register("phone")}
                 />
-                <FieldError errors={[form.formState.errors.phone]} />
+                <FieldError errors={[errors.phone]} />
               </FieldContent>
             </Field>
             <Field>
@@ -96,13 +95,13 @@ const LoginForm = () => {
                   id="password"
                   required
                   inputMode="numeric"
-                  {...form.register("password")}
+                  {...register("password")}
                 />
-                <FieldError errors={[form.formState.errors.password]} />
+                <FieldError errors={[errors.password]} />
               </FieldContent>
             </Field>
             {actionData && (
-              <p className="text-xs text-red-400">{actionData?.error}</p>
+              <p className="text-xs text-red-400">{actionData?.message}</p>
             )}
             <div className="grid gap-4">
               <Button

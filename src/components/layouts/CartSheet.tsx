@@ -1,11 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -15,35 +12,41 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Icons } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { cartItems } from "@/data/carts";
+// import { cartItems } from "@/data/carts";
 import { Link } from "react-router";
 import CartItem from "@/components/carts/CartItem";
 import { formatPrice } from "@/lib/utils";
+import useCartStore from "@/store/cartStore";
 
 const CartSheet = () => {
+  const itemCount = useCartStore((state) => state.getTotalItems());
+  const amountTotal = useCartStore((state) => state.getTotalPrice());
+  const cartItems = useCartStore((state) => state.carts);
   return (
     <Sheet>
       <SheetTrigger>
         <Button variant="ghost" size="icon" className="relative">
           <Icons.shoppingCart className="size-4" />
-          <Badge
-            className="absolute -top-2 -right-2 size-6 justify-center rounded-full p-2.5"
-            variant="destructive"
-          >
-            3
-          </Badge>
+          {itemCount > 0 && (
+            <Badge
+              className="absolute -top-2 -right-2 size-6 justify-center rounded-full p-2.5"
+              variant="destructive"
+            >
+              {itemCount}
+            </Badge>
+          )}
         </Button>
       </SheetTrigger>
       <SheetContent className="px-4">
         <SheetHeader className="">
-          <SheetTitle>Cart - 3</SheetTitle>
+          <SheetTitle>{itemCount > 0 ? `Cart - ${itemCount}` : 'Empty Cart'}</SheetTitle>
         </SheetHeader>
         <Separator />
         {cartItems.length > 0 ? (
           <>
             <ScrollArea className="h-[calc(100vh-9rem)] pb-10">
               {cartItems.map((cart) => (
-                <CartItem cart={cart} />
+                <CartItem key={cart.id} cart={cart} />
               ))}
             </ScrollArea>
             <div className="space-y-4">
@@ -59,7 +62,7 @@ const CartSheet = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Total</span>
-                  <span>{formatPrice(1000)}</span>
+                  <span>{formatPrice(amountTotal)}</span>
                 </div>
               </div>
             </div>

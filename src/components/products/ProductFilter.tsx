@@ -2,7 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+  FieldError,
+} from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import type { Category } from "@/types";
@@ -12,14 +18,17 @@ interface FilterProps {
     categories: Category[];
     types: Category[];
   };
+  selectedCategories: number[];
+  selectedTypes: number[];
+  onFilterChange: (categories: number[], types: number[]) => void;
 }
 
 const FormSchema = z.object({
-  categories: z.array(z.string()),
+  categories: z.array(z.int()),
   // .refine((value) => value.some((item) => item), {
   //   message: "You have to select at least one categories.",
-  // }),
-  types: z.array(z.string()),
+  // })
+  types: z.array(z.int()),
   // .refine((value) => value.some((item) => item), {
   //   message: "You have to select at least one types.",
   // }),
@@ -27,7 +36,7 @@ const FormSchema = z.object({
 
 type FilterFormData = z.infer<typeof FormSchema>;
 
-const ProductFilter = ({ filterList }: FilterProps) => {
+const ProductFilter = ({ filterList, selectedCategories, selectedTypes, onFilterChange }: FilterProps, ) => {
   const {
     control,
     handleSubmit,
@@ -35,18 +44,22 @@ const ProductFilter = ({ filterList }: FilterProps) => {
   } = useForm<FilterFormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      categories: [],
-      types: [],
+      categories: selectedCategories,
+      types: selectedTypes,
     },
   });
 
   function onSubmit(data: FilterFormData) {
     console.log(data);
-    // You can add filter logic here
+    onFilterChange(data.categories, data.types);
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit, (errors) => {
+        console.log("Validation Errors:", errors);
+      })}
+    >
       <FieldSet>
         <FieldLabel>Furniture Made By</FieldLabel>
         <FieldGroup className="gap-3">
@@ -58,7 +71,7 @@ const ProductFilter = ({ filterList }: FilterProps) => {
               render={({ field }) => (
                 <Field orientation="horizontal">
                   <Checkbox
-                    id={`${e.label}-${e.id}`}
+                    id={`${e.name}-${e.id}`}
                     // Check if the original ID exists in the field value
                     checked={field.value?.includes(e.id)}
                     onCheckedChange={(checked) => {
@@ -74,21 +87,17 @@ const ProductFilter = ({ filterList }: FilterProps) => {
                     }}
                   />
                   <FieldLabel
-                    htmlFor={`${e.label}-${e.id}`}
+                    htmlFor={`${e.name}-${e.id}`}
                     className="font-normal"
                   >
-                    {e.label}
+                    {e.name}
                   </FieldLabel>
                 </Field>
               )}
             />
           ))}
         </FieldGroup>
-        {errors.categories && (
-          <p className="text-xs text-red-500 mt-1">
-            {errors.categories.message}
-          </p>
-        )}
+        <FieldError errors={[errors.categories]} />
 
         <FieldLabel className="mt-4">Furniture Type By</FieldLabel>
         <FieldGroup className="gap-3">
@@ -100,7 +109,7 @@ const ProductFilter = ({ filterList }: FilterProps) => {
               render={({ field }) => (
                 <Field orientation="horizontal">
                   <Checkbox
-                    id={`${e.label}-${e.id}`}
+                    id={`${e.name}-${e.id}`}
                     // Check if the original ID exists in the field value
                     checked={field.value?.includes(e.id)}
                     onCheckedChange={(checked) => {
@@ -116,19 +125,17 @@ const ProductFilter = ({ filterList }: FilterProps) => {
                     }}
                   />
                   <FieldLabel
-                    htmlFor={`${e.label}-${e.id}`}
+                    htmlFor={`${e.name}-${e.id}`}
                     className="font-normal"
                   >
-                    {e.label}
+                    {e.name}
                   </FieldLabel>
                 </Field>
               )}
             />
           ))}
         </FieldGroup>
-        {errors.types && (
-          <p className="text-xs text-red-500 mt-1">{errors.types.message}</p>
-        )}
+        <FieldError errors={[errors.types]} />
 
         <Button type="submit" variant="outline" className="mt-4">
           Apply Filters

@@ -49,6 +49,22 @@
 
   /* custom theme variables */
   --color-own: #3b5d50;
+
+  --animate-progress: progress 1s ease-in-out infinite;
+
+  @keyframes progress {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    50% {
+      transform: translateX(50%);
+    }
+
+    100% {
+      transform: translateX(200%);
+    }
+  }
 }
 
 :root {

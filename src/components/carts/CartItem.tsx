@@ -1,13 +1,38 @@
-import { formatPrice } from '@/lib/utils';
-import React from 'react'
-import { Separator } from '@/components/ui/separator';
+import { formatPrice } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import Editable from "@/components/carts/Editable";
+import useCartStore from "@/store/cartStore";
 
-const CartItem = ({cart}) => {
+interface cartProps {
+  cart: {
+    id: number;
+    image: { path: string };
+    name: string;
+    price: number;
+    quantity: number;
+  };
+}
+
+const CartItem = ({ cart }: cartProps) => {
+  const {updateQuantity, removeItem} = useCartStore();
+  const imageUrl = import.meta.env.VITE_IMG_URL;
+
+  const updateHandler = (newQuantity: number) => {
+    if (newQuantity === 0) {
+      removeItem(cart.id); // Assuming 'id' is unique for each cart item
+    } else {
+      updateQuantity(cart.id, newQuantity);
+    }
+  };
+
+  const deleteHandler = () => {
+    removeItem(cart.id); // Assuming 'id' is unique for each cart item
+  };
   return (
     <div className="space-y-3">
       <div className="mb-2 mt-4 flex gap-4">
         <img
-          src={cart.image.url}
+          src={imageUrl + cart.image}
           alt="cart pic"
           loading="lazy"
           decoding="async"
@@ -24,14 +49,14 @@ const CartItem = ({cart}) => {
           </span> */}
         </div>
       </div>
-      {/* <Editable
+      <Editable
         onDelete={deleteHandler}
         quantity={cart.quantity}
         onUpdate={updateHandler}
-      /> */}
+      />
       <Separator />
     </div>
   );
-}
+};
 
-export default CartItem
+export default CartItem;

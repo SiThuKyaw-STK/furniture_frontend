@@ -2,25 +2,17 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "../ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Link } from "react-router";
 import type { Product } from "@/types";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 
 interface ProductProps {
   products: Product[];
 }
 
 const CarouselCard = ({ products }: ProductProps) => {
-
+  const imageUrl = import.meta.env.VITE_IMG_URL;
   return (
     <Carousel
       className="w-full"
@@ -35,7 +27,7 @@ const CarouselCard = ({ products }: ProductProps) => {
           <CarouselItem key={product.id} className="pl-1 lg:basis-1/3">
             <div className="flex gap-4 p-4 lg:px-4">
               <img
-                src={product.images[0]}
+                src={`${imageUrl}${product.images[0].path}`}
                 alt={product.name}
                 loading="lazy"
                 decoding="async"

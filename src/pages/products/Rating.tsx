@@ -1,6 +1,5 @@
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import React from "react";
 
 interface ratingProps {
   rating: number;

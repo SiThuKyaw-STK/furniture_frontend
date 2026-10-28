@@ -6,13 +6,16 @@ interface PostCardProps {
   isHaveContent: boolean;
 }
 const PostCard = ({ posts, isHaveContent = false }: PostCardProps) => {
+  const imageUrl = import.meta.env.VITE_IMG_URL;
   return (
     <div className="grid grid-cols-1 gap-8 px-4 md:grid-cols-2 md:px-0 lg:grid-cols-3 my-8">
       {posts.map((post) => (
         <Link to={`/blogs/${post.id}`} key={post.id} className="">
           <img
-            src={post.image}
+            src={imageUrl + post.image}
             alt="blog-post"
+            loading="lazy"
+            decoding="async"
             className="mb-4 w-full rounded-2xl object-cover"
           />
           <h2 className={`${!isHaveContent && 'ml-4'} line-clamp-1 text-xl font-extrabold`}>
@@ -25,7 +28,7 @@ const PostCard = ({ posts, isHaveContent = false }: PostCardProps) => {
           )}
           <div className={`${!isHaveContent && 'ml-4'} mt-2 text-xs space-x-1`}>
             <span>
-              by<span className="font-semibold"> {post.author} </span>
+              by<span className="font-semibold"> {post.author.fullName} </span>
               on
               <span className="font-semibold"> {post.updatedAt}</span>
             </span>

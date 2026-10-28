@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { Field, FieldError } from "@/components/ui/field";
 import { Icons } from "@/components/icons";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Button } from "./ui/button";
@@ -22,7 +21,7 @@ export function EmailForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit() {
     setSpinner(true);
   }
 
